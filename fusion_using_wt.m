@@ -2,8 +2,8 @@
 clc;
 clear;
 %% import data
-fig_origin1 = imread("D:\slides\AP3132 Advanced Digital Image Processing\project\source22_1.tif");
-fig_origin2 = imread("D:\slides\AP3132 Advanced Digital Image Processing\project\source22_2.tif");
+fig_origin1 = imread("source22_1.tif");
+fig_origin2 = imread("source22_2.tif");
 fig_origin1 = im2single(fig_origin1);fig_origin2 = im2single(fig_origin2);
 imshow(fig_origin1);
 imshow(fig_origin2);
