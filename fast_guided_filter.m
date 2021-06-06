@@ -17,7 +17,9 @@ function O = fast_guided_filter(P, I, kwargs)
     img_size = size(I);
     if s>1
         [X,Y] = meshgrid(1:img_size(2),1:img_size(1));
-        [X_sub,Y_sub] = meshgrid(1:s:img_size(2),1:s:img_size(1));
+        [X_sub,Y_sub] = meshgrid(...
+            linspace(1,img_size(2),floor(img_size(2)/s)),...
+            linspace(1,img_size(1),floor(img_size(1)/s)));
         I_sub = interp2(X,Y,I,X_sub,Y_sub,SubMethod);
         P_sub = interp2(X,Y,P,X_sub,Y_sub,SubMethod);
         r_sub = floor(r/s);

@@ -8,6 +8,7 @@ fig_origin2 = imread("source22_2.tif");
 % fig_origin2 = imread("c01_2.tif");
 
 fig_origin1 = im2single(fig_origin1);fig_origin2 = im2single(fig_origin2);
+
 % display image
 figure
 subplot(1,2,1)
@@ -23,7 +24,7 @@ fig = gff(fig_origin1,fig_origin2,...
         'eps1',0.3,...
         'r2',7,...
         'eps2',1e-6,...
-        's',1);
+        's',3);
 toc
 %% display result
 figure;
