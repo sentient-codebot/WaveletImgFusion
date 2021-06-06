@@ -22,14 +22,19 @@ function F = gff(I1, I2, kwargs)
     arguments
         I1 (:,:) 
         I2 (:,:)
-        kwargs.r1
-        kwargs.eps1
-        kwargs.r2
-        kwargs.eps2
+        kwargs.r1 (1,1) {mustBeInteger, mustBePositive} = 3
+        kwargs.eps1 (1,1) {mustBePositive} = 0.05
+        kwargs.r2 (1,1) {mustBeInteger, mustBePositive} = 1
+        kwargs.eps2 (1,1) {mustBePositive} = 0.005
         kwargs.rg (1,1) {mustBeInteger, mustBePositive} = 5
         kwargs.sigg {mustBePositive} = 5
     end
-    
+    r1 = kwargs.r1;
+    eps1 = kwargs.eps1;
+    r2 = kwargs.r2;
+    eps2 = kwargs.eps2;
+    rg = kwargs.rg;
+    sigg = kwargs.sigg;
     %% step 1 two-scale decomposition - 8-neighbor averaging
     avg_kernel = ones(3,3)/9; % the filter size is deputable
     B1 = conv2(I1,avg_kernel,'same');
@@ -53,16 +58,22 @@ function F = gff(I1, I2, kwargs)
     P1 = S1 == max(S1,S2);
     P2 = S2 == max(S1,S2);
     
+    WB1 = guided_filter(P1, I1, 'r', r1, 'eps', eps1);  % big r, big eps(?)
+    WD1 = guided_filter(P1, I1, 'r', r2, 'eps', eps2);  % small r, small eps(?)
     
+    WB2 = guided_filter(P2, I2, 'r', r1, 'eps', eps1);
+    WD2 = guided_filter(P2, I2, 'r', r2, 'eps', eps2);
     
+    B_bar = WB1.*B1+WB2.*B2;
+    D_bar = WD1.*D1+WD2.*D2;
     
-    
-    
-    
-    
-    
-    
-    
+    F = B_bar + D_bar;
     
 end
+
+
+
+
+
+
 
