@@ -58,11 +58,11 @@ function F = gff(I1, I2, kwargs)
     P1 = S1 == max(S1,S2);
     P2 = S2 == max(S1,S2);
     
-    WB1 = guided_filter(P1, I1, 'r', r1, 'eps', eps1);  % big r, big eps(?)
-    WD1 = guided_filter(P1, I1, 'r', r2, 'eps', eps2);  % small r, small eps(?)
+    WB1 = fast_guided_filter(P1, I1, 'r', r1, 'eps', eps1);  % big r, big eps(?)
+    WD1 = fast_guided_filter(P1, I1, 'r', r2, 'eps', eps2);  % small r, small eps(?)
     
-    WB2 = guided_filter(P2, I2, 'r', r1, 'eps', eps1);
-    WD2 = guided_filter(P2, I2, 'r', r2, 'eps', eps2);
+    WB2 = fast_guided_filter(P2, I2, 'r', r1, 'eps', eps1);
+    WD2 = fast_guided_filter(P2, I2, 'r', r2, 'eps', eps2);
     
     B_bar = WB1.*B1+WB2.*B2;
     D_bar = WD1.*D1+WD2.*D2;
