@@ -2,9 +2,10 @@
 clc;
 clear;
 %% import data
-fig_origin1 = imread("c01_1.tif");
-fig_origin2 = imread("c01_2.tif");
-fig_origin1 = im2double(fig_origin1);fig_origin2 = im2double(fig_origin2);
+fig_origin1 = imread("clock2.tif");
+fig_origin2 = imread("clock1.tif");
+fig_test = imread("clock3.tif");
+fig_origin1 = im2double(fig_origin1);fig_origin2 = im2double(fig_origin2);fig_test = im2double(fig_test);
 figure;
 subplot(1,2,1);
 imshow(fig_origin1);
@@ -18,7 +19,7 @@ wname = 'haar';
 [row, col] = size(fig1);
 % l = length;
 % w = width;
-iter = 2;
+iter = 5;
 [c1,s] = wavedec2(fig1,iter,wname);
 [c2,~] = wavedec2(fig2,iter,wname);
 % % while 1
@@ -76,30 +77,23 @@ coef_fusion = (c1+c2)/2;
 fig1 = appcoef2(c1,s,wname,iter);
 fig2 = appcoef2(c2,s,wname,iter);
 wd_size = 3; % specify the window size
-fig1_pd = padarray(fig1,[(wd_size-1)/2,(wd_size-1)/2]);%padding
-fig2_pd = padarray(fig2,[(wd_size-1)/2,(wd_size-1)/2]);
-fig1_pd = dlarray(fig1_pd);fig2_pd = dlarray(fig2_pd);
-fig1_mp = maxpool(fig1_pd,wd_size,'Stride',1,'DataFormat','SSCB');%maxpooling
-fig2_mp = maxpool(fig2_pd,wd_size,'Stride',1,'DataFormat','SSCB');
-fig1_mp = extractdata(fig1_mp);fig2_mp = extractdata(fig2_mp);
-bdm = fig1_mp>fig2_mp; % binary decision map(1 for fig1,0 for fig2)
-% consisteny verification
-% convo = [1,1,1;1,0,1;1,1,1];
-% bdm_f = zeros(size(bdm));
-% bdm_m = ones(size(bdm));%initial
-% while ~min(min(bdm_f == bdm_m))
-iterations = 1;
-i = iterations;
-while i
-% bdm_m = bdm;
-% mid = conv2(bdm,convo,'same');
-% bdm = mid>4;
-% bdm_f = bdm; % final binary decision map
-bdm = bwmorph(bdm,'majority');
-i = i-1;
-end
-fig = bdm.*fig1;
-fig = fig+~bdm.*fig2;
+% fig1_pd = padarray(fig1,[(wd_size-1)/2,(wd_size-1)/2]);%padding
+% fig2_pd = padarray(fig2,[(wd_size-1)/2,(wd_size-1)/2]);
+% fig1_pd = dlarray(fig1_pd);fig2_pd = dlarray(fig2_pd);
+% fig1_mp = maxpool(fig1_pd,wd_size,'Stride',1,'DataFormat','SSCB');%maxpooling
+% fig2_mp = maxpool(fig2_pd,wd_size,'Stride',1,'DataFormat','SSCB');
+% fig1_mp = extractdata(fig1_mp);fig2_mp = extractdata(fig2_mp);
+% bdm = fig1_mp>fig2_mp; % binary decision map(1 for fig1,0 for fig2)
+iterations = 10;
+% i = iterations;
+% while i
+% bdm = bwmorph(bdm,'majority');
+% i = i-1;
+% end
+% fig = bdm.*fig1;
+% fig = fig+~bdm.*fig2;
+fig = (fig1+fig2)/2;
+bdm = 0.5*ones(size(fig));
 
 for i = iter:-1:1
     [H1,V1,D1] = detcoef2('all',c1,s,i);
@@ -218,11 +212,22 @@ end
 fig = waverec2(coef_fusion,s,wname);
 figure;
 imshow(fig);
+%% comparison
+dif = fig - fig_test;
+dif_N = mat2gray(dif);
+% pixel averaging
+fig_pa = (fig_origin1+fig_origin2)/2;
+dif_pa = fig_pa - fig_test;
+dif_paN = mat2gray(dif_pa);
+figure;
+imshow(dif_paN);
 %% plot fusion result
 figure;
-subplot(1,3,1);
+subplot(2,2,1);
 imshow(fig_origin1);
-subplot(1,3,2);
+subplot(2,2,2);
 imshow(fig_origin2);
-subplot(1,3,3);
+subplot(2,2,3);
 imshow(fig);
+subplot(2,2,4);
+imshow(dif_N);
