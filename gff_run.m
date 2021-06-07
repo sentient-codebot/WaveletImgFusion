@@ -1,11 +1,11 @@
 
 %% load image
+% 
+% fig_origin1 = imread("source22_1.tif");
+% fig_origin2 = imread("source22_2.tif");
 
-fig_origin1 = imread("source22_1.tif");
-fig_origin2 = imread("source22_2.tif");
-
-% fig_origin1 = imread("c01_1.tif");
-% fig_origin2 = imread("c01_2.tif");
+fig_origin1 = imread("c01_1.tif");
+fig_origin2 = imread("c01_2.tif");
 
 fig_origin1 = im2single(fig_origin1);fig_origin2 = im2single(fig_origin2);
 
