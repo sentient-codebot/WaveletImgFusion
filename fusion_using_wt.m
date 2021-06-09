@@ -91,7 +91,7 @@ for i = iter:-1:1
 %     bdm_f = bdm; % final binary decision map
     bdmH = bwmorph(bdmH,'majority');
     bdmV = bwmorph(bdmV,'majority');
-    bdmD = bwmorph3(bdmD,'majority');
+    bdmD = bwmorph(bdmD,'majority');
     i = i-1;
     end
     H = bdmH.*H1;
@@ -146,7 +146,7 @@ else
     while i
     bdmH = bwmorph(bdmH,'majority');
     bdmV = bwmorph(bdmV,'majority');
-    bdmD = bwmorph3(bdmD,'majority');
+    bdmD = bwmorph(bdmD,'majority');
     i = i-1;
     end
     H = bdmH.*H1;
