@@ -6,7 +6,7 @@ fig_origin2 = imread("./images/input004_2.tif");
 fig_origin1 = im2double(fig_origin1);
 fig_origin2 = im2double(fig_origin2);
 %% run fusion algorithm(wavelet_based)
-wname='haar';rule = 'modified';iter = 1;iterations = 100;
+wname='haar';rule = 'modified';iter = 5;iterations = 10;
 % Wavelet Families(you can choose any of the follwing wavelets)
 % 
 % Wavelets
@@ -38,12 +38,12 @@ wname='haar';rule = 'modified';iter = 1;iterations = 100;
 % 'rbio2.2', 'rbio2.4', 'rbio2.6', 'rbio2.8'
 % 'rbio3.1', 'rbio3.3', 'rbio3.5', 'rbio3.7'
 % 'rbio3.9', 'rbio4.4', 'rbio5.5', 'rbio6.8'
-% tic;
-% [fig,bdm] = fusion_using_wt(fig_origin1,fig_origin2,wname,rule,iter,iterations);
-% toc;
-wv = 'db2';
-lv = 5;
-fig = wfusimg(fig_origin1,fig_origin2,wv,lv,'mean','max');
+tic;
+[fig,bdm] = fusion_using_wt(fig_origin1,fig_origin2,wname,rule,iter,iterations);
+toc;
+% wv = 'db2';
+% lv = 5;
+% fig = wfusimg(fig_origin1,fig_origin2,wv,lv,'mean','max');
 %% input test image
 % fig_test = imread("clock3.tif");
 % fig_test = im2double(fig_test);
@@ -87,4 +87,4 @@ imshow(fig);
 sgtitle("Fusion Using The Wavelet Transform");
 
 %% output
-imwrite(fig, 'input004_fused_buildin(mean,max).png','png');
+imwrite(bdm, 'input004_fused_wavelet.png','png');
