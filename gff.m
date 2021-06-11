@@ -20,8 +20,8 @@ function F = gff(I1, I2, kwargs)
 %
 
     arguments
-        I1 (:,:) 
-        I2 (:,:)
+        I1 (:,:,:) 
+        I2 (:,:,:)
         kwargs.r1 (1,1) {mustBeInteger, mustBePositive} = 3
         kwargs.eps1 (1,1) {mustBePositive} = 0.05
         kwargs.r2 (1,1) {mustBeInteger, mustBePositive} = 1
@@ -36,26 +36,40 @@ function F = gff(I1, I2, kwargs)
     eps2 = kwargs.eps2;
     rg = kwargs.rg;
     sigg = kwargs.sigg;
+            
+    
     %% step 1 two-scale decomposition - 8-neighbor averaging
-    avg_kernel = ones(3,3)/9; % the filter size is deputable
-    B1 = conv2(I1,avg_kernel,'same');
-    B2 = conv2(I2,avg_kernel,'same');
+    avg_kernel = ones(10,10)/100; % the filter size is deputable
+    B1 = zeros(size(I1));
+    B2 = B1;
+    for channel = 1:size(I1,3)
+        B1(:,:,channel) = conv2(I1(:,:,channel),avg_kernel,'same');
+        B2(:,:,channel) = conv2(I2(:,:,channel),avg_kernel,'same');
+    end
     D1 = I1 - B1;
     D2 = I2 - B2;
 
     %% step 2 weigh map construciton
     % saliency measure
     laplacian_kernel = [0 -1 0; -1 4 -1; 0 -1 0];
-    H1 = conv2(I1, laplacian_kernel,'same');
-    H2 = conv2(I2, laplacian_kernel,'same');
+    H1 = zeros(size(I1));
+    H2 = H1;
+    for channel = 1:size(I1,3)
+        H1(:,:,channel) = conv2(I1(:,:,channel), laplacian_kernel,'same');
+        H2(:,:,channel) = conv2(I2(:,:,channel), laplacian_kernel,'same');
+    end
     gaussian_kernel = zeros(2*rg+1, 2*rg+1);
     for x = -rg:rg
         for y = -rg:rg
             gaussian_kernel(y+rg+1,x+rg+1) = 1/(2*pi*rg^2)*exp(-(x^2+y^2)/(2*rg^2));
         end
     end
-    S1 = conv2(abs(H1),gaussian_kernel,'same');
-    S2 = conv2(abs(H2),gaussian_kernel,'same');
+    S1 = zeros(size(H1));
+    S2 = S1;
+    for channel = 1:size(I1,3)
+        S1(:,:,channel) = conv2(abs(H1(:,:,channel)),gaussian_kernel,'same');
+        S2(:,:,channel) = conv2(abs(H2(:,:,channel)),gaussian_kernel,'same');
+    end
     P1 = S1 == max(S1,S2);
     P2 = S2 == max(S1,S2);
     
@@ -69,8 +83,11 @@ function F = gff(I1, I2, kwargs)
     WD2 = fast_guided_filter(P2, I2, 'r', r2, 'eps', eps2,...
         's',kwargs.s);
     
-    B_bar = WB1.*B1+WB2.*B2;
-    D_bar = WD1.*D1+WD2.*D2;
+    WB_sum = WB1 + WB2;
+    WD_sum = WD2 + WD2;
+    
+    B_bar = (WB1.*B1+WB2.*B2);
+    D_bar = (WD1.*D1+WD2.*D2);
     
     F = B_bar + D_bar;
     
