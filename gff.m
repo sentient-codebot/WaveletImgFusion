@@ -84,10 +84,11 @@ function F = gff(I1, I2, kwargs)
         's',kwargs.s);
     
     WB_sum = WB1 + WB2;
-    WD_sum = WD2 + WD2;
+    WD_sum = WD1 + WD2;
     
-    B_bar = (WB1.*B1+WB2.*B2);
-    D_bar = (WD1.*D1+WD2.*D2);
+    
+    B_bar = (WB1.*B1+WB2.*B2)./WB_sum;
+    D_bar = (WD1.*D1+WD2.*D2)./WD_sum;
     
     F = B_bar + D_bar;
     
