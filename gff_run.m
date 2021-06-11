@@ -1,15 +1,15 @@
 
 %% load image
 % 
-% file_name = "images/source22_";
-% fig_origin1 = imread("source22_1.tif");
-% fig_origin2 = imread("source22_2.tif");
+file_name = "images/source22_";
+fig_ori1 = imread("source22_1.tif");
+fig_ori2 = imread("source22_2.tif");
 
-file_name = "images/desk_";
-fig_origin1 = imread(file_name+"far.tif");
-fig_origin2 = imread(file_name+"near.tif");
+% file_name = "images/desk_";
+% fig_origin1 = imread(file_name+"far.tif");
+% fig_origin2 = imread(file_name+"near.tif");
 
-fig_origin1 = im2single(fig_origin1);fig_origin2 = im2single(fig_origin2);
+fig_ori1 = im2single(fig_ori1);fig_ori2 = im2single(fig_ori2);
 
 % display image
 % figure
@@ -20,7 +20,7 @@ fig_origin1 = im2single(fig_origin1);fig_origin2 = im2single(fig_origin2);
 
 %% transform
 tic
-fig = gff(fig_origin1,fig_origin2,...
+fig = gff(fig_ori1,fig_ori2,...
         'rg',10,...
         'r1',45,...
         'eps1',0.3,...
@@ -31,9 +31,9 @@ toc
 %% display result
 figure;
 subplot(1,3,1)
-imshow(fig_origin1)
+imshow(fig_ori1)
 subplot(1,3,2)
-imshow(fig_origin2)
+imshow(fig_ori2)
 subplot(1,3,3)
 imshow(fig)
 
