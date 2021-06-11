@@ -2,14 +2,16 @@
 clc;
 clear;
 %% import data
-fig_origin1 = imread("source22_1.tif");
-fig_origin2 = imread("source22_2.tif");
+file_name = "images/source22_";
+fig_origin1 = imread(file_name+"1.tif");
+fig_origin2 = imread(file_name+"2.tif");
 fig_origin1 = im2single(fig_origin1);fig_origin2 = im2single(fig_origin2);
 imshow(fig_origin1);
 imshow(fig_origin2);
 %% wavelet transform
 fig1 = fig_origin1;
 fig2 = fig_origin2;
+tic
 % set the wavelet type to haar
 wavename = 'haar';
 [length, width] = size(fig1);
@@ -98,6 +100,7 @@ for j = 1:iter
     % TODO5d - substitute wavelet component into coarse scale
     fig(1:length/(2^(iter-j)),1:width/2^((iter-j))) = tmp;
 end
+toc
 %% plot fusion result
 figure;
 subplot(1,3,1);

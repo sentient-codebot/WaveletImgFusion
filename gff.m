@@ -39,7 +39,8 @@ function F = gff(I1, I2, kwargs)
             
     
     %% step 1 two-scale decomposition - 8-neighbor averaging
-    avg_kernel = ones(10,10)/100; % the filter size is deputable
+    avg_kernel_size = 15;
+    avg_kernel = ones(avg_kernel_size,avg_kernel_size)/avg_kernel_size^2; % the filter size is deputable
     B1 = zeros(size(I1));
     B2 = B1;
     for channel = 1:size(I1,3)
