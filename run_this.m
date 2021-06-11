@@ -87,4 +87,4 @@ imshow(fig);
 sgtitle("Fusion Using The Wavelet Transform");
 
 %% output
-imwrite(bdm, 'input004_fused_wavelet.png','png');
+imwrite(fig, 'input004_fused_wavelet.png','png');
