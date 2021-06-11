@@ -1,9 +1,10 @@
 clc;
 clear;
 %% input pair images
-fig_origin1 = imread("clock1.tif");
-fig_origin2 = imread("clock2.tif");
-
+fig_origin1 = imread("c01_1.tif");
+fig_origin2 = imread("c01_2.tif");
+fig_origin1 = im2double(fig_origin1);
+fig_origin2 = im2double(fig_origin2);
 %% run fusion algorithm(wavelet_based)
 wname='haar';rule = 'modified';iter = 5;iterations = 1;
 % Wavelet Families(you can choose any of the follwing wavelets)
@@ -41,8 +42,6 @@ wname='haar';rule = 'modified';iter = 5;iterations = 1;
 
 %% input test image
 fig_test = imread("clock3.tif");
-fig_origin1 = im2double(fig_origin1);
-fig_origin2 = im2double(fig_origin2);
 fig_test = im2double(fig_test);
 
 %% comparison & measuring performance
@@ -56,6 +55,9 @@ dif_paN = mat2gray(dif_pa);
 % measuring performance
 roi = sqrt(sum(dif_N.^2,'all')/(size(fig,1)*size(fig,2)));
 roi_pa = sqrt(sum(dif_paN.^2,'all')/(size(fig,1)*size(fig,2)));
+% Qy metric
+Qy = ssim_based_assessment(fig_origin1,fig_origin2,fig);
+Qy_ref = ssim_based_assessment(fig_origin1,fig_origin2,fig_test);
 
 
 %% plot images
