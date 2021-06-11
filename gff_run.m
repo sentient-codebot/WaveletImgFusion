@@ -1,9 +1,9 @@
 
 %% load image
 % 
-file_name = "images/desk_";
-fig_ori1 = imread(file_name+"1.tif");
-fig_ori2 = imread(file_name+"2.tif");
+% file_name = "images/desk_";
+fig_ori1 = imread("./images/source22_1.tif");
+fig_ori2 = imread("./images/source22_2.tif");
 
 % file_name = "images/desk_";
 % fig_origin1 = imread(file_name+"far.tif");
@@ -29,13 +29,15 @@ fig = gff(fig_ori1,fig_ori2,...
         's',3);
 toc
 %% display result
-figure;
-subplot(1,3,1)
-imshow(fig_ori1)
-subplot(1,3,2)
-imshow(fig_ori2)
-subplot(1,3,3)
-imshow(fig)
+% figure;
+% subplot(1,3,1)
+% imshow(fig_ori1)
+% subplot(1,3,2)
+% imshow(fig_ori2)
+% subplot(1,3,3)
+% imshow(fig)
 
 %% write fused image to file
-imwrite(fig,file_name+'gff.png')
+% imwrite(fig,file_name+'gff.png')
+%Q_MI = NMI(fig_ori1,fig_ori2,fig)
+nfmi = fmi(fig_ori1,fig_ori2,fig, 'wavelet', 3)

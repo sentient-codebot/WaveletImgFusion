@@ -1,12 +1,14 @@
 clc;
 clear;
 %% input pair images
-fig_origin1 = imread("./images/input004_1.tif");
-fig_origin2 = imread("./images/input004_2.tif");
+fig_origin1 = imread("./images/source22_1.tif");
+fig_origin2 = imread("./images/source22_2.tif");
+
 fig_origin1 = im2double(fig_origin1);
 fig_origin2 = im2double(fig_origin2);
+
 %% run fusion algorithm(wavelet_based)
-wname='haar';rule = 'modified';iter = 5;iterations = 10;
+wname='haar';rule = 'modified';iter = 4;iterations = 10;
 % Wavelet Families(you can choose any of the follwing wavelets)
 % 
 % Wavelets
@@ -41,9 +43,11 @@ wname='haar';rule = 'modified';iter = 5;iterations = 10;
 tic;
 [fig,bdm] = fusion_using_wt(fig_origin1,fig_origin2,wname,rule,iter,iterations);
 toc;
-% wv = 'db2';
-% lv = 5;
-% fig = wfusimg(fig_origin1,fig_origin2,wv,lv,'mean','max');
+wv = 'db2';
+lv = 5;
+tic;
+fig = wfusimg(fig_origin1,fig_origin2,wv,lv,'mean','max');
+toc;
 %% input test image
 % fig_test = imread("clock3.tif");
 % fig_test = im2double(fig_test);
@@ -65,26 +69,27 @@ toc;
 
 
 %% plot images
-figure;
-subplot(1,3,1);
-imshow(fig_origin1);
-subplot(1,3,2);
-imshow(fig_origin2);
-% sgtitle("Original Image Pair");
-% figure;
-% subplot(1,2,1);
-% imshow(fig_pa)
-% subplot(1,2,2);
-% imshow(dif_paN);
-% sgtitle("Pixel Averaging Fusion");
 % figure;
 % subplot(1,3,1);
-% imshow(bdm);
-subplot(1,3,3);
-imshow(fig);
+% imshow(fig_origin1);
+% subplot(1,3,2);
+% imshow(fig_origin2);
+% % sgtitle("Original Image Pair");
+% % figure;
+% % subplot(1,2,1);
+% % imshow(fig_pa)
+% % subplot(1,2,2);
+% % imshow(dif_paN);
+% % sgtitle("Pixel Averaging Fusion");
+% % figure;
+% % subplot(1,3,1);
+% % imshow(bdm);
 % subplot(1,3,3);
-% imshow(dif_N);
-sgtitle("Fusion Using The Wavelet Transform");
+% imshow(fig);
+% % subplot(1,3,3);
+% % imshow(dif_N);
+% sgtitle("Fusion Using The Wavelet Transform");
 
 %% output
-imwrite(fig, 'input004_fused_wavelet.png','png');
+%Q_MI = NMI(fig_origin1,fig_origin2,fig)
+% nfmi = fmi(fig_origin1,fig_origin2,fig, 'wavelet', 3)
